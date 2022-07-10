@@ -5,25 +5,24 @@ def factorial(number):
     if number == 0:
         return f
     else:
-        for i in range(1,number+1):
-            f = f*i
+        for i in range(1, number+1):
+            f *= i
         return f
 
-start = time.time()
+tic = time.time()
 
-i = 3
-solutions = []
-while i<10**7:
-    digits = []
-    string = str(i)
-    for s in string:
-        digits.append(s)
-    factorial_sum = 0
-    for d in digits:
-        factorial_sum += factorial(int(d))
-    if factorial_sum == i:
-        solutions.append(i)
+factorials = [factorial(i) for i in range(0, 10)]
+i = 10
+solution = 0
+
+while i < 6*factorials[-1]:
+    fact_sum = 0
+    for j in str(i):
+        fact_sum += factorials[int(j)]    
+    if fact_sum == i:
+        solution += i
     i += 1
 
-end = time.time()
-print(sum(solutions))
+toc = time.time()
+print(solution)
+print(toc - tic)
