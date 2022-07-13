@@ -8,14 +8,11 @@ def is_prime(number):
     elif number%2 == 0:
         return False
     else:
-        division = 0
         for i in range(2, int(number**(1/2))+1):
             if number%i == 0:
-                division += 1
-        if division == 0:
-            return True
-        else:
-            return False
+                return False
+                break
+        return True
         
 tic = time.time()
             
@@ -30,7 +27,7 @@ for i in num_list:
             # create a list of digits
             digits = list(str(i))
             # check whether i is 2 or digits contains even numbers
-            if (i == 2) or (0 not in [int(n)%2 for n in digits]):
+            if (i in [2, 5]) or (1 not in [(int(d)%2==0)+(int(d)%5==0) for d in digits]):
                 circular  =  [i]
                 prime_number = 1
                 t = 1
