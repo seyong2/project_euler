@@ -1,7 +1,7 @@
 import numpy as np
 import time as time
 
-start = time.time()
+
 
 t1 = """75
 95 64
@@ -21,29 +21,24 @@ t1 = """75
 
 t1 = t1.split("\n")
 
+tic = time.time()
 arr = np.zeros((len(t1), len(t1)), int)
    
 for i in range(len(t1)):
-    j = 0
-    for element in t1[i].split():
-        arr[i, j] = int(element)
-        j += 1
-
-for i in range(len(arr)-1, 0, -1):
-    sums = []
+    t1[i] = [int(j) for j in t1[i].strip('\n').split(' ')]
+    
+for i in range(len(t1)-1, 0, -1):
+    down = t1[i]
+    top = t1[i-1]
     for j in range(i):
-        a = arr[i,j]+arr[i-1,j]
-        b = arr[i,j+1]+arr[i-1,j]
-        if a > b:
-            sums.append(a)
+        if down[j] > down[j+1]:
+            t1[i-1][j] += down[j]
         else:
-            sums.append(b)
-    #arr[i-1, :sum(arr[i-1]!=0)] = np.array(sums)
-    arr[i-1, :i] = np.array(sums)
+            t1[i-1][j] += down[j+1]
 
-end = time.time()
-print(arr[0,0]) 
-print(end - start)       
+toc = time.time()
+print(top[j]) 
+print(toc - tic)       
         
             
         
