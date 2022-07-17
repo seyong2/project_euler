@@ -1,37 +1,47 @@
 import math
 import time as time
-start = time.time()
 
 # define a function to determine a number is prime or not
-def prime(number):
+def is_prime(number):
     if (number in [0, 1]) or (number % 2 == 0):
         return False
     elif number in [2, 3]:
         return True
     else:
-        division_count = 0
         for i in range(2, math.ceil(number**0.5)):
             if number % i == 0:
-                division_count += 1
-        if division_count == 0:
-            return True
-        else: 
-            return False
+                return False
+                break
+        return True
+
+def perm_n(l, n):
+    if n == 0:
+        return [[]]
+    else:
+        perms = []
+        for i in range(0, len(l)):
+            temp = l[:]
+            a = temp[i]
+            temp.remove(a)
+            remain_combi = perm_n(temp, n-1)
+            for j in remain_combi:
+                perms.append((a, *j))
+        return perms
+
+tic = time.time()
 
 solution = 0
-digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+digits = [str(i) for i in range(9, 0, -1)]
 
-for i in range(1, 10):
-    minimum = ''.join(digits[:i])
-    maximum = minimum[::-1]
-    for j in range(int(minimum), int(maximum)+1):
-        if sorted([d for d in str(j)]) != digits[:i]:
-            continue
-        else:
-            if prime(j) == True:
-                if j > solution:
-                    solution = j
+i = 9
+while solution == 0:
+    for j in perm_n(digits[len(digits)-i:], i):
+        k = ''.join(j)
+        if is_prime(int(k)):
+            solution = int(k)
+            break
+    i -= 1
         
-end = time.time()
+toc = time.time()
 print(solution) # 7652413
-print(end - start)
+print(toc - tic)
