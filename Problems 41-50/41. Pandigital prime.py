@@ -1,14 +1,15 @@
-import math
 import time as time
 
 # define a function to determine a number is prime or not
 def is_prime(number):
-    if (number in [0, 1]) or (number % 2 == 0):
+    if number in [0, 1]:
         return False
     elif number in [2, 3]:
         return True
+    elif number % 2 == 0:
+        return False
     else:
-        for i in range(2, math.ceil(number**0.5)):
+        for i in range(2, int(number ** 0.5) + 1):
             if number % i == 0:
                 return False
                 break

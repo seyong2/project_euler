@@ -1,29 +1,35 @@
 import time as time
-start = time.time()
 
-solution = list()
+result = 0
 triangles = list()
-pentagonals = list()
-hexagonals = list()
 
 def triangle(n):
     return n*(n+1)/2
 
-def pentagonal(n):
-    return n*(3*n-1)/2
+def is_int_zero_of_function_pentagon(number):
+    zero_of_function = (1+(1+4*3*2*number)**0.5)/(2*3)
+    if str(zero_of_function).split('.')[-1] == '0':
+        return True
+    else:
+        return False
 
-def hexagonal(n):
-    return n*(2*n-1)
+def is_int_zero_of_function_hexagon(number):
+    zero_of_function = (1+(1+4*2*number)**0.5)/(2*2)
+    if str(zero_of_function).split('.')[-1] == '0':
+        return True
+    else:
+        return False
 
-i = 1
-while len(solution) < 3:
-    triangles.append(triangle(i))
-    pentagonals.append(pentagonal(i))
-    hexagonals.append(hexagonal(i))
-    if triangle(i) in pentagonals and triangle(i) in hexagonals:
-        solution.append(triangle(i))
+tic = time.time()
+
+i = 286
+
+while result == 0:
+    if is_int_zero_of_function_pentagon(triangle(i)) and is_int_zero_of_function_hexagon(triangle(i)):
+        result = triangle(i)
     i += 1
 
-end = time.time()
-print(solution[-1])
-print(end - start)
+toc = time.time()
+
+print(result)
+print(toc - tic)
