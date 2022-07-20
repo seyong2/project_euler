@@ -1,5 +1,4 @@
 import time as time
-tic = time.time()
 
 def is_prime(n):
     if n in [0, 1]:
@@ -17,24 +16,27 @@ def is_prime(n):
                 continue
         return True
 
-primes = []
+tic = time.time()
+
+primes = [2]
 results = []
 
-number = 1
+n = 3
 while True:
-    if is_prime(number):
-        primes.append(number)
+    if is_prime(n):
+        primes.append(n)
         for i in range(0, len(primes)):
             sum_primes = sum(primes[i:])
-            if (is_prime(sum_primes)==True) and (sum_primes not in results):
+            if (is_prime(sum_primes)) and (sum_primes not in results):
                 results.append(sum_primes)
                 break
-        if max(results)>10**6:
+        if max(sorted(results))>10**6:
             break
-    number += 1
+       
+    n += 1
 
-results.sort()
+#results.sort()
 
 toc = time.time()
-print(results[-2])
+print(sorted(results)[-2])
 print(toc-tic)

@@ -29,7 +29,7 @@ while True:
         while temp%div == 0:
             if (is_prime(div)):
                 factors.append(div)
-                temp = temp/div
+                temp /= div
         div += 1
     if len(set(factors)) == 4:
         results.append(n)

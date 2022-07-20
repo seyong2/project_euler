@@ -1,11 +1,8 @@
 import time as time
-start = time.time()
+tic = time.time()
 
-sum = 0
-for i in range(1, 1001):
-    sum += i**i
+sum_series = sum([i**i for i in range(1, 1001)])
 
-solution = int(str(sum)[-10:])
-end = time.time()
-print(solution)
-print(end - start)
+toc = time.time()
+print(int(str(sum_series)[-10:]))
+print(toc - tic)
