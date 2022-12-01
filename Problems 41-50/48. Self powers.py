@@ -1,8 +1,8 @@
 import time as time
 tic = time.time()
 
-sum_series = sum([i**i for i in range(1, 1001)])
+result = sum([i**i for i in range(1, 1001)])%10**10
 
 toc = time.time()
-print(int(str(sum_series)[-10:]))
+print(result)
 print(toc - tic)
