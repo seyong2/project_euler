@@ -6,8 +6,8 @@ def is_prime(n):
     elif n%2 == 0 or n%3 == 0:
         return False
     else:
-        for i in range(5, int(n**(1/2))+1):
-            if n%i == 0:
+        for i in range(5, int(n**(1/2))+1, 6):
+            if n%i == 0 or n%(i+2) == 0:
                 return False
                 break
         return True
@@ -16,7 +16,7 @@ tic = time.time()
 
 primes = []
 cond = True
-result = 0
+result = []
 
 n = 1
 
@@ -26,9 +26,9 @@ while cond:
         i = 0
         while i < len(primes):
             sum_primes = sum(primes[i:])
-            if (is_prime(sum_primes)) and (sum_primes > result):
+            if (is_prime(sum_primes)) and (len(primes[i:]) > len(result)):
                 if sum_primes < 10**6:
-                    result = sum_primes
+                    result = primes[i:]
                 else:
                     cond = False
                     break
@@ -37,5 +37,5 @@ while cond:
 
 toc = time.time()
 
-print(result)
+print(sum(result))
 print(toc-tic)
