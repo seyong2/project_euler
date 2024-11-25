@@ -1,7 +1,7 @@
-import numpy as np
 import time as time
 start = time.time()
-x = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
+
+grid = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 49 49 99 40 17 81 18 57 60 87 17 40 98 43 69 48 04 56 62 00
 81 49 31 73 55 79 14 29 93 71 40 67 53 88 30 03 49 13 36 65
 52 70 95 23 04 60 11 42 69 24 68 56 01 32 56 71 37 02 36 91
@@ -21,70 +21,123 @@ x = """08 02 22 97 38 15 00 40 00 75 04 05 07 78 52 12 50 77 91 08
 20 69 36 41 72 30 23 88 34 62 99 69 82 67 59 85 74 04 36 16
 20 73 35 29 78 31 90 01 74 31 49 71 48 86 81 16 23 57 05 54
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48"""
-x = x.replace('\n',' ')
-x = np.array(x.split(sep = ' ')).reshape((20, 20))
-x = x.astype(np.int)
-tot = []
+grid = list(map(int, grid.replace('\n', ' ').split(' ')))
+
+dim_grid = 20
+n_numbers = 4
+
 # horizontally
-product1 = []
-for i in range(0, x.shape[0]):
-    for j in range(0, x.shape[1]-3):
-        p = np.prod([x[i,j], x[i,j+1], x[i,j+2], x[i,j+3]])
-        product1.append(p)
-tot.append(np.amax(product1))
+max_product_horizontal = 0
+i = 0
+while i < len(grid):
+    line = grid[i:i+dim_grid]
+    for j in range(len(line)-n_numbers):
+        product = 1
+        numbers = line[j:j+n_numbers]
+        for k in numbers:
+            if k == 0:
+                product = 0
+                break
+            else:
+                product *= k
+        if product > max_product_horizontal:
+            max_product_horizontal = product
+    i += 20
+    
 # vertically
-product2 = []
-for i in range(0, x.shape[1]):
-    for j in range(0, x.shape[0]-3):
-        p = np.prod([x[j,i], x[j+1,i], x[j+2,i], x[j+3,i]])
-        product2.append(p)
-tot.append(np.amax(product2))
-# diagonally
-product3 = []
-for i in range(0, len(x.diagonal())-3):
-    p = np.prod([x[i,i], x[i+1,i+1], x[i+2,i+2], x[i+3,i+3]])
-    product3.append(p)
-tot.append(max(product3))
+max_product_vertical = 0
+i = 0
+while i < dim_grid:
+    line = grid[i:len(grid):dim_grid]
+    for j in range(len(line)-n_numbers):
+        product = 1
+        numbers = line[j:j+n_numbers]
+        for k in numbers:
+            if k == 0:
+                product = 0
+                break
+            else:
+                product *= k
+        if product > max_product_vertical:
+            max_product_vertical = product
+    i += 1
+
 # upper diagonally
-product4 = []
-for i in range(1, x.shape[1]-3):
-    t = x[0:20-i,i:20].diagonal()
-    for j in range(0, len(t)-3):
-        p = np.prod(t[j:j+4])
-        product4.append(p)
-tot.append(max(product4))
+max_product_upper_diagonal = 0
+i = 0
+while i < dim_grid:
+    line = grid[i:len(grid)-dim_grid*i:dim_grid+1]
+    if len(line) > 3:
+        for j in range(len(line)-n_numbers):
+            product = 1
+            numbers = line[j:j+n_numbers]
+            for k in numbers:
+                if k == 0:
+                    product = 0
+                    break
+                else:
+                    product *= k
+            if product > max_product_upper_diagonal:
+                max_product_upper_diagonal = product
+    i += 1
+
 # lower diagonally
-product5 = []
-for i in range(1, x.shape[0]-3):
-    t = x[i:20,0:20-i].diagonal()
-    for j in range(0, len(t)-3):
-        p = np.prod(t[j:j+4])
-        product5.append(p)
-tot.append(max(product5))
-# reversed diagonal
-product6 = []
-d = np.diag(np.fliplr(x))
-for i in range(0, len(d)-3):
-    p = np.prod(d[i:i+4])
-    product6.append(p)
-tot.append(max(product6))   
-# reverse upper diagonally
-product7 = []
-y = np.fliplr(x)
-for i in range(1, y.shape[1]-3):
-    t = y[0:20-i,i:20].diagonal()
-    for j in range(0, len(t)-3):
-        p = np.prod(t[j:j+4])
-        product7.append(p)
-tot.append(max(product7))
-# reverse lower diagonally
-product8 = []
-for i in range(1, y.shape[0]-3):
-    t = y[i:20,0:20-i].diagonal()
-    for j in range(0, len(t)-3):
-        p = np.prod(t[j:j+4])
-        product8.append(p)
-tot.append(max(product8))
-print(max(tot))
+max_product_lower_diagonal = 0
+i = 0
+while i < len(grid):
+    line = grid[i:len(grid):dim_grid+1]
+    if len(line) > 3:
+        for j in range(len(line)-n_numbers):
+            product = 1
+            numbers = line[j:j+n_numbers]
+            for k in numbers:
+                if k == 0:
+                    product = 0
+                    break
+                else:
+                    product *= k
+            if product > max_product_lower_diagonal:
+                max_product_lower_diagonal = product
+    i += 20
+
+# upper diagonally reverse
+max_product_upper_diagonal_reverse = 0
+i = 19
+while i > 0:
+    line = grid[i:len(grid)-dim_grid*(dim_grid-i)+1:19]
+    if len(line) > 3:
+        for j in range(len(line)-n_numbers):
+            product = 1
+            numbers = line[j:j+n_numbers]
+            for k in numbers:
+                if k == 0:
+                    product = 0
+                    break
+                else:
+                    product *= k
+            if product > max_product_upper_diagonal_reverse:
+                max_product_upper_diagonal_reverse = product
+    i -= 1
+
+# upper diagonally reverse
+max_product_lower_diagonal_reverse = 0
+i = 19
+while i < len(grid):
+    line = grid[i:len(grid)-dim_grid*(dim_grid-i)+1:19]
+    if len(line) > 3:
+        for j in range(len(line)-n_numbers):
+            product = 1
+            numbers = line[j:j+n_numbers]
+            for k in numbers:
+                if k == 0:
+                    product = 0
+                    break
+                else:
+                    product *= k
+            if product > max_product_lower_diagonal_reverse:
+                max_product_lower_diagonal_reverse = product
+    i += 20
+
+print(max([max_product_horizontal, max_product_vertical, max_product_lower_diagonal, max_product_upper_diagonal, max_product_upper_diagonal_reverse, max_product_lower_diagonal_reverse]))
 end = time.time()
 print(end - start)
